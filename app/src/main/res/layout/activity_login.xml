@@ -18,7 +18,7 @@
             android:id="@+id/login_button_login_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="   Login   "
+            android:text="Login"
             android:background="#00796B"
             android:textColor="#FFF"
             android:layout_below="@id/mobile_number_edit_login_activity"
