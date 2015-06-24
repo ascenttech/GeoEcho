@@ -71,7 +71,7 @@ public class DetailActivity extends Activity{
         });
 
         Spinner sp1 = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, state);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,  R.layout.row_spinner_item, state);
         sp1.setAdapter(adapter_state);
         Spinner sp2 = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<String> adapter_state1 = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, country);
