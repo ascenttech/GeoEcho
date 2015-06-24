@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.ascenttechnovation.geoecho.SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,15 +17,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ascenttechnovation.geoecho.LandingActivity"
+            android:name=".activities.LandingActivity"
             android:label="LandingActivity" >
         </activity>
         <activity
-            android:name="com.ascenttechnovation.geoecho.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="LoginActivity" >
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".activities.DetailActivity"
             android:label="DetailActivity" >
         </activity>
     </application>
