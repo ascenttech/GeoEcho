@@ -103,6 +103,11 @@ public class LoginActivity extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

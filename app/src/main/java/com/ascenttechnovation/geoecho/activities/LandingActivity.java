@@ -29,4 +29,8 @@ public class LandingActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

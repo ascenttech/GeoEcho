@@ -133,4 +133,6 @@ public class DetailActivity extends Activity{
         call.setImageBitmap(bp);
 
     }
+
+
 }
