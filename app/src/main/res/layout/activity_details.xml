@@ -27,7 +27,8 @@
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/rg">
                 <RadioButton android:id="@+id/r1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,10 +47,10 @@
                 android:layout_gravity="center_horizontal"/>
 
             <Button
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Date"
-                android:onClick="showTimePickerDialog" />
+                android:text="Select Date"/>
 
             <EditText
                 android:layout_width="match_parent"
