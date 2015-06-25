@@ -7,14 +7,15 @@ import android.content.Intent;
 /**
  * Created by ADMIN on 25-06-2015.
  */
-public class RecieveBootAlert extends BroadcastReceiver {
+public class AlarmReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(intent.getAction()== Intent.ACTION_BOOT_COMPLETED){
 
 
-        }
+            // clear the shared preference
+
+
     }
 }

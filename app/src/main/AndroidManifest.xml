@@ -28,6 +28,10 @@
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.DetailActivity"/>
         <activity android:name=".activities.SplashScreenActivity"/>
+
+        <receiver android:name=".util.AlarmReciever"/>
+
+
     </application>
 
 </manifest>
