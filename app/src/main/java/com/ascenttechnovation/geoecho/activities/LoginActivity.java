@@ -15,20 +15,7 @@ import com.ascenttechnovation.geoecho.R;
 import com.ascenttechnovation.geoecho.async.CheckLoginValidityAsyncTask;
 import com.ascenttechnovation.geoecho.util.Constants;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
 /**
@@ -36,6 +23,7 @@ import java.net.URLEncoder;
  */
 public class LoginActivity extends Activity {
 
+    String contactNo,finalUrl;
     EditText mobileNumber;
     Button login;
     ProgressDialog progressDialog;
@@ -67,11 +55,17 @@ public class LoginActivity extends Activity {
 
         login.setOnClickListener(listener);
 
+
     }
 
     private void login() throws IOException{
 
-        String finalUrl = url+ URLEncoder.encode(mobileNumber.getText().toString(),"utf-8");
+        contactNo = mobileNumber.getText().toString();
+        sharedPreferences = getPreferences(0);
+        editor = sharedPreferences.edit();
+        editor.putString("contactNo",contactNo);
+        editor.commit();
+        finalUrl = url+ URLEncoder.encode(contactNo,"utf-8");
         new CheckLoginValidityAsyncTask(getApplicationContext(),new CheckLoginValidityAsyncTask.CheckLoginValidityListener() {
             @Override
             public void onStart(boolean status) {

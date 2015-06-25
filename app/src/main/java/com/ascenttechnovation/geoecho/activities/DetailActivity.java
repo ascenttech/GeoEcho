@@ -3,6 +3,7 @@ package com.ascenttechnovation.geoecho.activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
+import com.ascenttechnovation.geoecho.async.CheckLoginValidityAsyncTask;
+import com.ascenttechnovation.geoecho.async.SubmitDetailsAsyncTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.Calendar;
 
 /**
@@ -47,10 +51,13 @@ import java.util.Calendar;
 public class DetailActivity extends FragmentActivity {
 
     private String[] astate= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
-    String filePath;
     DatePicker pickerDate;
-    String date,name,state,gender;
-
+    String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
+    ProgressDialog progressDialog;
+    EditText ed1;
+    RadioGroup radioGroup;
+    RadioButton rb;
+    Spinner spinner;
     Uri output;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,31 +70,20 @@ public class DetailActivity extends FragmentActivity {
                 showDatePicker();
             }
         });
-        final EditText ed1 = (EditText) findViewById(R.id.name);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rg);
-        final RadioButton rb = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ed1 = (EditText) findViewById(R.id.name);
+        radioGroup = (RadioGroup) findViewById(R.id.rg);
+        rb = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,astate);
         spinner.setAdapter(adapter_state);
         Button button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                name = ed1.getText().toString();
-                gender = rb.getText().toString();
-                state = String.valueOf(spinner.getSelectedItem());
-                String jsonstr = readexternaljason();
                 try {
-                    JSONObject userObject = new JSONObject(jsonstr);
-                    JSONObject jsonid = userObject.getJSONObject("status");
-                    String success = jsonid.getString("status");
-                    if (success == "200") {
-                        Intent intent = new Intent(DetailActivity.this, LandingActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Cannot establized a connection.", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
+                    login();
+                }
+                catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -178,4 +174,46 @@ public class DetailActivity extends FragmentActivity {
         return true;
     }
 
+    private void login() throws IOException{
+       // &image_link=&name=&gender=&state=&date=
+        name = ed1.getText().toString();
+        gender = rb.getText().toString();
+        state = String.valueOf(spinner.getSelectedItem());
+        contactno = "";
+        String finalUrl = url + URLEncoder.encode(contactno, "utf-8")
+                + "&image_link=" + URLEncoder.encode("/drhsh/sdthsjh/set", "utf-8")
+                + "&name" + URLEncoder.encode(name, "utf-8")
+                + "&gender" + URLEncoder.encode(gender, "utf-8")
+                + "&state" + URLEncoder.encode(state, "utf-8")
+                + "&date" + URLEncoder.encode(date, "utf-8");
+        new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
+            @Override
+            public void onStart(boolean status) {
+
+                progressDialog = new ProgressDialog(DetailActivity.this);
+                progressDialog.setTitle("GeoEcho");
+                progressDialog.setMessage("Sending,Please Wait...");
+                progressDialog.show();
+
+            }
+            @Override
+            public void onResult(boolean result) {
+
+                progressDialog.dismiss();
+                if(result){
+
+                    Intent i = new Intent(DetailActivity.this,LandingActivity.class);
+                    startActivity(i);
+
+                }
+                else{
+
+                    Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later",5000).show();
+
+                }
+
+            }
+        }).execute(finalUrl);
+
+    }
 }

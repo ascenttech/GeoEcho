@@ -16,28 +16,27 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Created by ADMIN on 24-06-2015.
+ * Created by ADMIN on 25-06-2015.
  */
-public class CheckLoginValidityAsyncTask extends AsyncTask<String,Void,Boolean> {
+public class SubmitDetailsAsyncTask extends AsyncTask<String,Void,Boolean> {
 
     Context context;
-    CheckLoginValidityListener listener;
+    SubmitDetailsListener listener;
     HttpEntity httpEntity;
     HttpPost httpPost;
     HttpClient httpClient;
     HttpResponse httpResponse;
     String responseString;
 
-    public interface CheckLoginValidityListener{
+    public interface SubmitDetailsListener{
 
         public void onStart(boolean status);
         public void onResult(boolean result);
     }
 
-    public CheckLoginValidityAsyncTask(Context context, CheckLoginValidityListener listener) {
+    public SubmitDetailsAsyncTask(Context context, SubmitDetailsListener listener) {
         this.context = context;
         this.listener = listener;
-        Log.d(Constants.LOG_TAG,Constants.CheckLoginValidityAsyncTask);
     }
 
     @Override
@@ -49,7 +48,6 @@ public class CheckLoginValidityAsyncTask extends AsyncTask<String,Void,Boolean> 
     @Override
     protected Boolean doInBackground(String... url) {
 
-        Log.d(Constants.LOG_TAG,Constants.CheckLoginValidityAsyncTask);
         Log.d(Constants.LOG_TAG," The url to be fetched "+url[0]);
         try{
 
@@ -67,14 +65,6 @@ public class CheckLoginValidityAsyncTask extends AsyncTask<String,Void,Boolean> 
 
                 JSONObject jsonObject = new JSONObject(responseString);
                 Log.d(Constants.LOG_TAG," JSON OBJECT "+ jsonObject);
-
-                JSONArray jsonArray = jsonObject.getJSONArray("listing");
-                for(int i=0;i<jsonArray.length();i++){
-
-                    JSONObject nestedJsonObject = jsonArray.getJSONObject(i);
-                    String licenseId = nestedJsonObject.getString("license_id");
-
-                }
 
                 return true;
 
