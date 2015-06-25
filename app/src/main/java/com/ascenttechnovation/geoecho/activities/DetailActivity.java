@@ -1,6 +1,7 @@
 package com.ascenttechnovation.geoecho.activities;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 /**
  * Created by ADMIN on 22-06-2015.
@@ -39,9 +42,9 @@ import java.io.InputStreamReader;
 public class DetailActivity extends Activity{
 
     private String[] state= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
-    private String[] country= {"Select Country","China","India","Italy","London","Zim"};
-    private String[] food= {"Select Food","Veg","Non Veg","Jain"};
     String filePath;
+    DatePicker pickerDate;
+    String datepicked;
 
     Uri output;
     @Override
@@ -49,37 +52,31 @@ public class DetailActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d("geoecho", "DetailActivity");
+
         Button button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                String jsonstr=readexternaljason();
+                String jsonstr = readexternaljason();
                 try {
                     JSONObject userObject = new JSONObject(jsonstr);
                     JSONObject jsonid = userObject.getJSONObject("success");
                     String success = jsonid.getString("success");
-                    if(success=="1") {
+                    if (success == "1") {
                         Intent intent = new Intent(DetailActivity.this, LandingActivity.class);
                         startActivity(intent);
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Cannot establized a connection.", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {e.printStackTrace();}
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         Spinner sp1 = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,  R.layout.row_spinner_item, state);
         sp1.setAdapter(adapter_state);
-        Spinner sp2 = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter<String> adapter_state1 = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, country);
-        sp2.setAdapter(adapter_state1);
-        Spinner sp3 = (Spinner) findViewById(R.id.spinner3);
-        ArrayAdapter<String> adapter_state2 = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, food);
-        sp3.setAdapter(adapter_state2);
-
 
         final ImageButton call = (ImageButton) findViewById(R.id.camera);
         filePath = Environment.getExternalStorageDirectory() + "/img1.jpeg";
