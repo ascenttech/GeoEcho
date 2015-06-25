@@ -14,6 +14,8 @@ public class AlarmReciever extends BroadcastReceiver {
 
               // WRITE THE CODE FOR CLEARING THE SHARED PREFERENCE
 
+                // PROVIDE USER LOGIN
+
             // clear the shared preference
 
 
