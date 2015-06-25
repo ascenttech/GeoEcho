@@ -1,17 +1,24 @@
 package com.ascenttechnovation.geoecho.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,16 +39,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 /**
  * Created by ADMIN on 22-06-2015.
  */
-public class DetailActivity extends Activity{
+public class DetailActivity extends FragmentActivity {
 
-    private String[] state= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
-    private String[] country= {"Select Country","China","India","Italy","London","Zim"};
-    private String[] food= {"Select Food","Veg","Non Veg","Jain"};
+    private String[] astate= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
     String filePath;
+    DatePicker pickerDate;
+    String date,name,state,gender;
 
     Uri output;
     @Override
@@ -49,37 +57,41 @@ public class DetailActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d("geoecho", "DetailActivity");
+        Button button1 = (Button) findViewById(R.id.date);
+        button1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
+        final EditText ed1 = (EditText) findViewById(R.id.name);
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rg);
+        final RadioButton rb = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,astate);
+        spinner.setAdapter(adapter_state);
         Button button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                String jsonstr=readexternaljason();
+                name = ed1.getText().toString();
+                gender = rb.getText().toString();
+                state = String.valueOf(spinner.getSelectedItem());
+                String jsonstr = readexternaljason();
                 try {
                     JSONObject userObject = new JSONObject(jsonstr);
-                    JSONObject jsonid = userObject.getJSONObject("success");
-                    String success = jsonid.getString("success");
-                    if(success=="1") {
+                    JSONObject jsonid = userObject.getJSONObject("status");
+                    String success = jsonid.getString("status");
+                    if (success == "200") {
                         Intent intent = new Intent(DetailActivity.this, LandingActivity.class);
                         startActivity(intent);
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Cannot establized a connection.", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {e.printStackTrace();}
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
-        Spinner sp1 = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,  R.layout.row_spinner_item, state);
-        sp1.setAdapter(adapter_state);
-        Spinner sp2 = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter<String> adapter_state1 = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, country);
-        sp2.setAdapter(adapter_state1);
-        Spinner sp3 = (Spinner) findViewById(R.id.spinner3);
-        ArrayAdapter<String> adapter_state2 = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, food);
-        sp3.setAdapter(adapter_state2);
-
 
         final ImageButton call = (ImageButton) findViewById(R.id.camera);
         filePath = Environment.getExternalStorageDirectory() + "/img1.jpeg";
@@ -134,5 +146,36 @@ public class DetailActivity extends Activity{
 
     }
 
+
+    private void showDatePicker() {
+        DatePickerFragment date = new DatePickerFragment();
+        /**
+         * Set Up Current Date Into dialog
+         */
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        /**
+         * Set Call back to capture selected date
+         */
+        date.setCallBack(ondate);
+        date.show(getSupportFragmentManager(), "Date Picker");
+    }
+
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            date = String.valueOf(year)+"-"+String.valueOf(monthOfYear)+"-"+String.valueOf(dayOfMonth);
+        }
+    };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
 }
