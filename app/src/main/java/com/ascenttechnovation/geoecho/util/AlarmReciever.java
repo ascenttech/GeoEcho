@@ -12,7 +12,7 @@ public class AlarmReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
+              // WRITE THE CODE FOR CLEARING THE SHARED PREFERENCE
 
             // clear the shared preference
 
