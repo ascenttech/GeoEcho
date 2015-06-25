@@ -1,7 +1,10 @@
 package com.ascenttechnovation.geoecho.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,10 +16,12 @@ import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
 import com.ascenttechnovation.geoecho.async.CheckLoginValidityAsyncTask;
+import com.ascenttechnovation.geoecho.util.AlarmReciever;
 import com.ascenttechnovation.geoecho.util.Constants;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Calendar;
 
 /**
  * Created by ADMIN on 20-06-2015.
@@ -30,6 +35,8 @@ public class LoginActivity extends Activity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String url = "http://www.andealr.com/crontest/geoecho/licenseID.php?contact_no=";
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,21 @@ public class LoginActivity extends Activity {
 
                 progressDialog.dismiss();
                 if(result){
+
+                    // This is set an alarm to be fired 20 hours from the time he logs in
+                    alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getApplicationContext(), AlarmReciever.class);
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    calendar.set(Calendar.HOUR_OF_DAY, 00);
+
+                    // fire every 20 hours
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                            1000 * 60 * 1200, pendingIntent);
+
+                    // start the new actvity
 
                     Intent i = new Intent(LoginActivity.this,LandingActivity.class);
                     startActivity(i);
