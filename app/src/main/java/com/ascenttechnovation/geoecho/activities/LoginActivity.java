@@ -1,6 +1,8 @@
 package com.ascenttechnovation.geoecho.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,6 +44,8 @@ public class LoginActivity extends Activity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String url = "http://www.andealr.com/crontest/geoecho/licenseID.php?contact_no=";
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,9 @@ public class LoginActivity extends Activity {
 
                 progressDialog.dismiss();
                 if(result){
+
+
+
 
                     Intent i = new Intent(LoginActivity.this,LandingActivity.class);
                     startActivity(i);
