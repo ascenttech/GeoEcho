@@ -34,7 +34,7 @@ public class SplashScreenActivity extends Activity {
 
         Log.d(Constants.LOG_TAG, Constants.SplashScreenActivity);
 
-        setContentView(R.layout.activity_splashscreen);
+        setContentView(R.layout.activity_splash_screen);
         
         Thread timerThread = new Thread(){
             public void run(){
