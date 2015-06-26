@@ -54,7 +54,7 @@ import java.util.Calendar;
 public class DetailActivity extends FragmentActivity {
 
     private String[] astate= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
-    String contactno,filePath,date,name,state,gender,url="http://192.168.0.107/nilesh/geoecho/dataInsert.php?contact_no=";
+    String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
     ProgressDialog progressDialog;
     EditText ed1;
     RadioGroup radioGroup;
@@ -120,7 +120,7 @@ public class DetailActivity extends FragmentActivity {
         EditText mobileno = (EditText) findViewById(R.id.mobile_number_edit_login_activity);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://192.168.0.107/nilesh/dataInsert.php?contactNo="+mobileno.getText().toString());
+        HttpGet httpGet = new HttpGet("http://192.168.0.104/nilesh/dataInsert.php?contactNo="+mobileno.getText().toString());
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();
@@ -176,7 +176,7 @@ public class DetailActivity extends FragmentActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            date = String.valueOf(year)+String.valueOf(monthOfYear)+String.valueOf(dayOfMonth);
+            date = String.valueOf(year)+"/"+String.valueOf(monthOfYear)+"/"+String.valueOf(dayOfMonth);
             dbutton.setText(date);
         }
     };
@@ -188,12 +188,12 @@ public class DetailActivity extends FragmentActivity {
 
     private void login() throws IOException{
 
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         int selectedId = radioGroup.getCheckedRadioButtonId();
         rb = (RadioButton) findViewById(selectedId);
         name = ed1.getText().toString();
         gender = rb.getText().toString();
-        //contactno = "9820052210";
+        //contactno = "9920052210";
         contactno = pref.getString("contactNo","0");
 
         String finalUrl = url + URLEncoder.encode(contactno, "utf-8")

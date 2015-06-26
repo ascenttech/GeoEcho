@@ -32,7 +32,7 @@ public class SplashScreenActivity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
-                    pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                    pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     login = pref.getInt("login",1);
                     if(login == 0) {
                         Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);

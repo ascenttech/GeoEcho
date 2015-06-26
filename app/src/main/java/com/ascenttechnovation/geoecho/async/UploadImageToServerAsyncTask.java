@@ -46,7 +46,7 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
     private UploadImageToServerCallback listener;
 
 
-    public UploadImageToServer(Context context, UploadImageToServerCallback listener) {
+    public UploadImageToServerAsyncTask(Context context, UploadImageToServerCallback listener) {
         this.context = context;
         this.listener = listener; // save callback
 
@@ -80,7 +80,7 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
                         }
                     });
 
-            sourceFile = new File(CameraActivity.imagepath);
+            //sourceFile = new File(CameraActivity.imagepath);
 
             // Adding file data to http body
             entity.addPart("image", new FileBody(sourceFile));

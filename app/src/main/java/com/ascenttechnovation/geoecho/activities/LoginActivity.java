@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
     ProgressDialog progressDialog;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    String url = "http://192.168.0.107/nilesh/geoecho/licenseID.php?contact_no=";
+    String url = "http://andealr.com/crontest/geoecho/licenseID.php?contact_no=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class LoginActivity extends Activity {
                 progressDialog.dismiss();
                 if(result){
 
-                    pref = getApplication().getSharedPreferences("myPref",0);
+                    pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     editor = pref.edit();
                     editor.putString("contactNo",contactNo);
                     editor.putInt("login",0);
