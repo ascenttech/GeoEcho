@@ -14,14 +14,13 @@ import com.ascenttechnovation.geoecho.util.Constants;
  */
 public class SplashScreenActivity extends Activity {
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
+    SharedPreferences pref;
+    int login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(Constants.LOG_TAG,Constants.SplashScreenActivity);
+        Log.d(Constants.LOG_TAG, Constants.SplashScreenActivity);
 
         setContentView(R.layout.activity_splashscreen);
         
@@ -33,8 +32,16 @@ public class SplashScreenActivity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
-                    Intent i = new Intent(SplashScreenActivity.this,LoginActivity.class);
-                    startActivity(i);
+                    pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                    login = pref.getInt("login",1);
+                    if(login == 0) {
+                        Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);
+                        startActivity(i);
+                    }
+                    else {
+                        Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    }
                 }
             }
         };

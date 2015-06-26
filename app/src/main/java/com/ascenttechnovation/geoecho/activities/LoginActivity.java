@@ -1,10 +1,7 @@
 package com.ascenttechnovation.geoecho.activities;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,12 +13,10 @@ import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
 import com.ascenttechnovation.geoecho.async.CheckLoginValidityAsyncTask;
-import com.ascenttechnovation.geoecho.util.AlarmReciever;
 import com.ascenttechnovation.geoecho.util.Constants;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Calendar;
 
 /**
  * Created by ADMIN on 20-06-2015.
@@ -32,11 +27,9 @@ public class LoginActivity extends Activity {
     EditText mobileNumber;
     Button login;
     ProgressDialog progressDialog;
-    SharedPreferences sharedPreferences;
+    SharedPreferences pref;
     SharedPreferences.Editor editor;
-    String url = "http://www.andealr.com/crontest/geoecho/licenseID.php?contact_no=";
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
+    String url = "http://192.168.0.107/nilesh/geoecho/licenseID.php?contact_no=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +61,6 @@ public class LoginActivity extends Activity {
     private void login() throws IOException{
 
         contactNo = mobileNumber.getText().toString();
-        sharedPreferences = getPreferences(0);
-        editor = sharedPreferences.edit();
-        editor.putString("contactNo",contactNo);
-        editor.commit();
         finalUrl = url+ URLEncoder.encode(contactNo,"utf-8");
         new CheckLoginValidityAsyncTask(getApplicationContext(),new CheckLoginValidityAsyncTask.CheckLoginValidityListener() {
             @Override
@@ -89,28 +78,18 @@ public class LoginActivity extends Activity {
                 progressDialog.dismiss();
                 if(result){
 
-                    // This is set an alarm to be fired 20 hours from the time he logs in
-                    alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(getApplicationContext(), AlarmReciever.class);
-                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    calendar.set(Calendar.HOUR_OF_DAY, 00);
-
-                    // fire every 20 hours
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                            1000 * 60 * 1200, pendingIntent);
-
-                    // start the new actvity
-
+                    pref = getApplication().getSharedPreferences("myPref",0);
+                    editor = pref.edit();
+                    editor.putString("contactNo",contactNo);
+                    editor.putInt("login",0);
+                    editor.commit();
                     Intent i = new Intent(LoginActivity.this,LandingActivity.class);
                     startActivity(i);
 
                 }
                 else{
 
-                    Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later",5000).show();
+                    Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later",Toast.LENGTH_LONG).show();
 
                 }
 

@@ -18,6 +18,8 @@ public class Constants {
     public static final String LandingActivity =" LANDING ACTIVITY ";
     public static final String LoginActivity =" LOGIN ACTIVITY ";
     public static final String SplashScreenActivity =" SPLASH SCREEN ACTIVITY ";
+    public static final String DetailActivity =" DETAIL  ACTIVITY ";
+
 //    public static final String LOG_TAG =" GeoEcho ";
 
     // Log tags for all the asyncTask
