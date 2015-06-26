@@ -55,6 +55,7 @@ public class DetailActivity extends FragmentActivity {
 
     private String[] astate= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
     String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
+    long latitude,longitude;
     ProgressDialog progressDialog;
     EditText ed1;
     RadioGroup radioGroup;
@@ -193,7 +194,8 @@ public class DetailActivity extends FragmentActivity {
         rb = (RadioButton) findViewById(selectedId);
         name = ed1.getText().toString();
         gender = rb.getText().toString();
-        //contactno = "9920052210";
+        latitude = pref.getLong("latitude", 0);
+        longitude = pref.getLong("longitude", 0);
         contactno = pref.getString("contactNo","0");
 
         String finalUrl = url + URLEncoder.encode(contactno, "utf-8")
@@ -201,7 +203,9 @@ public class DetailActivity extends FragmentActivity {
                 + "&name=" + URLEncoder.encode(name, "utf-8")
                 + "&gender=" + URLEncoder.encode(gender, "utf-8")
                 + "&state=" + URLEncoder.encode(state, "utf-8")
-                + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8");
+                + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
+                + "&latitude=" + URLEncoder.encode(""+latitude, "utf-8")
+                + "&longitude=" + URLEncoder.encode(""+longitude, "utf-8");
         new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
             @Override
             public void onStart(boolean status) {
