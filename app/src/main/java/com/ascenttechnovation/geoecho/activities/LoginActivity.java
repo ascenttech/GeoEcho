@@ -47,7 +47,7 @@ public class LoginActivity extends Activity {
 
     private void findViews(){
 
-        mobileNumber = (EditText) findViewById(R.id.mobile_number_edit_login_activity);
+        mobileNumber = (EditText) findViewById(R.id.comment_edit_details_activity);
         login = (Button) findViewById(R.id.login_button_login_activity);
     }
 

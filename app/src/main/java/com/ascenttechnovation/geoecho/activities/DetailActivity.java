@@ -57,41 +57,38 @@ import java.util.Locale;
  */
 public class DetailActivity extends FragmentActivity {
 
-    private String[] astate= {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
+    private String[] state_array_details_activity = {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
     String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
     long latitude,longitude;
-    ProgressDialog progressDialog,progressDialog2;
-    EditText ed1;
-    RadioGroup radioGroup;
-    RadioButton rb;
-    Spinner spinner;
+    ProgressDialog submit_progressDialog_details_activity, upload_progressDialog_details_activity;
+    EditText name_edit_details_activity;
+    RadioGroup gender_radioGroup_details_activity;
+    RadioButton check_gender_radiobutton_details_activity;
+    Spinner state_spinner_details_activity;
     Button dbutton,button;
-    SharedPreferences pref;
+    SharedPreferences insert_sharedpreference_details_activity;
     ImageView image;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100,MEDIA_TYPE_IMAGE = 1;
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
     public static Uri fileUri,output;
-    Button button1;
-    ImageButton call;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d(Constants.LOG_TAG, Constants.DetailActivity);
-
-        findViews();
-
+        Button button1 = (Button) findViewById(R.id.date_button_details_actvity);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDatePicker();
             }
         });
-
-
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,astate);
-        spinner.setAdapter(adapter_state);
-
+        name_edit_details_activity = (EditText) findViewById(R.id.name_edit_details_activity);
+        gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
+        state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, state_array_details_activity);
+        state_spinner_details_activity.setAdapter(adapter_state);
+        dbutton = (Button) findViewById(R.id.date_button_details_actvity);
+        button = (Button) findViewById(R.id.submit_button_details_activity);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -102,17 +99,18 @@ public class DetailActivity extends FragmentActivity {
                 }
             }
         });
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        state_spinner_details_activity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View seletedItem, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
                 state = item.toString();
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
 
-        call = (ImageButton) findViewById(R.id.camera);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        final ImageButton call = (ImageButton) findViewById(R.id.camera_image_details_activity);
         filePath = Environment.getExternalStorageDirectory() + "/img1.jpeg";
         File file = new File(filePath);
         output = Uri.fromFile(file);
@@ -124,25 +122,8 @@ public class DetailActivity extends FragmentActivity {
             }
         });
     }
-
-    private void findViews(){
-
-        button1 = (Button) findViewById(R.id.date);
-        ed1 = (EditText) findViewById(R.id.name);
-        radioGroup = (RadioGroup) findViewById(R.id.rg);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        dbutton = (Button) findViewById(R.id.date);
-        button = (Button) findViewById(R.id.button2);
-
-    }
-
-    private void setViews(){
-
-
-    }
-
     public String readexternaljason() {
-        EditText mobileno = (EditText) findViewById(R.id.mobile_number_edit_login_activity);
+        EditText mobileno = (EditText) findViewById(R.id.comment_edit_login_activity);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://192.168.0.104/nilesh/dataInsert.php?contactNo="+mobileno.getText().toString());
@@ -196,14 +177,14 @@ public class DetailActivity extends FragmentActivity {
     }
 
     private void login() throws IOException{
-        pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        int selectedId = radioGroup.getCheckedRadioButtonId();
-        rb = (RadioButton) findViewById(selectedId);
-        name = ed1.getText().toString();
-        gender = rb.getText().toString();
-        latitude = pref.getLong("latitude", 0);
-        longitude = pref.getLong("longitude", 0);
-        contactno = pref.getString("contactNo","0");
+        insert_sharedpreference_details_activity = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        int selectedId = gender_radioGroup_details_activity.getCheckedRadioButtonId();
+        check_gender_radiobutton_details_activity = (RadioButton) findViewById(selectedId);
+        name = name_edit_details_activity.getText().toString();
+        gender = check_gender_radiobutton_details_activity.getText().toString();
+        latitude = insert_sharedpreference_details_activity.getLong("latitude", 0);
+        longitude = insert_sharedpreference_details_activity.getLong("longitude", 0);
+        contactno = insert_sharedpreference_details_activity.getString("contactNo","0");
 
         String finalUrl = url + URLEncoder.encode(contactno, "utf-8")
                 + "&photo_id=" + URLEncoder.encode("1", "utf-8")
@@ -214,18 +195,17 @@ public class DetailActivity extends FragmentActivity {
                 + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
                 + "&latitude=" + URLEncoder.encode(""+latitude, "utf-8")
                 + "&longitude=" + URLEncoder.encode(""+longitude, "utf-8");
-
         new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
             @Override
             public void onStart(boolean status) {
-                progressDialog = new ProgressDialog(DetailActivity.this);
-                progressDialog.setTitle("GeoEcho");
-                progressDialog.setMessage("Sending,Please Wait...");
-                progressDialog.show();
+                submit_progressDialog_details_activity = new ProgressDialog(DetailActivity.this);
+                submit_progressDialog_details_activity.setTitle("GeoEcho");
+                submit_progressDialog_details_activity.setMessage("Sending,Please Wait...");
+                submit_progressDialog_details_activity.show();
             }
             @Override
             public void onResult(boolean result) {
-                progressDialog.dismiss();
+                submit_progressDialog_details_activity.dismiss();
                 if(result){
                     Intent i = new Intent(DetailActivity.this,LandingActivity.class);
                     startActivity(i);
@@ -236,8 +216,6 @@ public class DetailActivity extends FragmentActivity {
             }
         }).execute(finalUrl);
     }
-
-
     //image upload
     public void uploadImage(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -245,7 +223,35 @@ public class DetailActivity extends FragmentActivity {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
-
+    private void previewCapturedImage(){
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),options);
+            Log.d(Constants.LOG_TAG,bitmap.toString());
+            image.setImageBitmap(bitmap);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    new UploadImageToServerAsyncTask(getApplicationContext(),new UploadImageToServerAsyncTask.UploadImageToServerCallback() {
+                        @Override
+                        public void onStart(boolean a) {
+                            upload_progressDialog_details_activity = new ProgressDialog(DetailActivity.this);
+                            upload_progressDialog_details_activity.setTitle("Uploading please wait");
+                            upload_progressDialog_details_activity.setMessage("Loading");
+                            upload_progressDialog_details_activity.show();
+                        }
+                        @Override
+                        public void onResult(String b) {
+                            upload_progressDialog_details_activity.dismiss();
+                        }
+                    }).execute();
+                }
+            },3000);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
@@ -262,39 +268,6 @@ public class DetailActivity extends FragmentActivity {
             }
         }
     }
-
-
-
-    private void previewCapturedImage(){
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 8;
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),options);
-            Log.d(Constants.LOG_TAG,bitmap.toString());
-            image.setImageBitmap(bitmap);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    new UploadImageToServerAsyncTask(getApplicationContext(),new UploadImageToServerAsyncTask.UploadImageToServerCallback() {
-                        @Override
-                        public void onStart(boolean a) {
-                            progressDialog2 = new ProgressDialog(DetailActivity.this);
-                            progressDialog2.setTitle("Uploading please wait");
-                            progressDialog2.setMessage("Loading");
-                            progressDialog2.show();
-                        }
-                        @Override
-                        public void onResult(String b) {
-                            progressDialog2.dismiss();
-                        }
-                    }).execute();
-                }
-            },3000);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
@@ -322,11 +295,4 @@ public class DetailActivity extends FragmentActivity {
 
         return mediaFile;
     }
-
-    View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
 }
