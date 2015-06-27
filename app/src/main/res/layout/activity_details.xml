@@ -7,68 +7,83 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin"
+        android:padding="5dp"
+        android:background="@drawable/b"
         >
         <ImageButton
             android:id="@+id/camera_image_details_activity"
             android:layout_width="fill_parent"
             android:layout_height="250dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo" />
+            android:src="@drawable/camera_icon"
+            android:background="@android:color/transparent"
+            />
 
         <com.ascenttechnovation.geoecho.custom.CustomEditText
             android:id="@+id/name_edit_details_activity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="Enter Full Name"
             android:background="@drawable/rectangle"
             android:padding="@dimen/padding"
             android:textSize="@dimen/textSize"
+            android:layout_marginTop="@dimen/margin"
             />
 
         <RadioGroup
             android:id="@+id/gender_radiogroup_details_activity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/margin"
+            android:background="@drawable/rectangle"
             >
             <RadioButton android:id="@+id/male_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male"
                 android:textSize="@dimen/textSize"
+                android:textStyle="normal"
+                android:layout_gravity="center_vertical"
                 />
             <RadioButton android:id="@+id/female_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Female"
                 android:textSize="@dimen/textSize"
+                android:textStyle="normal"
+                android:layout_gravity="center_vertical"
                 />
         </RadioGroup>
 
         <Spinner
             android:id="@+id/state_spinner_details_activity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:padding="@dimen/padding"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/textSize"
+            android:background="@drawable/rectangle"
+            android:layout_marginTop="@dimen/margin"
             />
 
         <com.ascenttechnovation.geoecho.custom.CustomButton
             android:id="@+id/date_button_details_actvity"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Select Date"
             android:layout_marginBottom="@dimen/margin"
             android:textSize="@dimen/textSize"
+            android:background="@drawable/rectangle"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="left|center_vertical"
+            android:padding="5dp"
             />
 
         <com.ascenttechnovation.geoecho.custom.CustomEditText
             android:id="@+id/comment_edit_login_activity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="Comment..."
             android:background="@drawable/rectangle"
             android:padding="@dimen/padding"
@@ -78,13 +93,14 @@
         <com.ascenttechnovation.geoecho.custom.CustomButton
             android:id="@+id/submit_button_details_activity"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Submit"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/rounded_corners"
             android:layout_marginTop="@dimen/margin"
             android:layout_marginBottom="@dimen/textSize"
             android:textSize="@dimen/textSize"
+            android:textColor="#FFF"
             />
     </LinearLayout>
 </ScrollView>

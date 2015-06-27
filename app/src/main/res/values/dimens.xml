@@ -6,7 +6,7 @@
     <dimen name="padding">15dp</dimen>
     <dimen name="margin">10dp</dimen>
 
-    <dimen name="textSize">20dp</dimen>
+    <dimen name="textSize">16dp</dimen>
 
 
 </resources>

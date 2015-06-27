@@ -18,7 +18,7 @@
         android:id="@+id/textView2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:layout_below="@id/splash_logo"
         />
 

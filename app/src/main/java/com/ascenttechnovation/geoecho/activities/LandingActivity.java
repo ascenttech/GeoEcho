@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
 import com.ascenttechnovation.geoecho.util.Constants;
@@ -18,6 +19,7 @@ public class LandingActivity extends ActionBarActivity {
     Intent i ;
     double latitude,longitude;
     TextView morningReport,afternoonReport,eveningReport;
+    int counter =0;
 
 
     @Override
@@ -68,6 +70,15 @@ public class LandingActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
+
+        counter++;
+        if(counter%2==0){
+            counter=0;
+            finish();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Press Back Again to Exit",3000).show();
+        }
 
     }
 

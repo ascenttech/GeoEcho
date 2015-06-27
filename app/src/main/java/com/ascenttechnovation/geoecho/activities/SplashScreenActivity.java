@@ -12,6 +12,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
@@ -31,6 +35,9 @@ public class SplashScreenActivity extends Activity {
     boolean gps_enabled = false;
     boolean network_enabled = false;
     LocationManager lm;
+    ImageView logo;
+    TextView appName;
+    Animation zoomIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +47,16 @@ public class SplashScreenActivity extends Activity {
 
         setContentView(R.layout.activity_splash_screen);
 
+        findViews();
+
         Thread timerThread = new Thread(){
             public void run(){
                 try{
 
+
+                    zoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom);
+                    logo.startAnimation(zoomIn);
+                    appName.startAnimation(zoomIn);
 
                     lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                     Log.d(Constants.LOG_TAG," Location Manager "+ lm);
@@ -75,7 +88,7 @@ public class SplashScreenActivity extends Activity {
                             finalLoc = net_loc;
                         }
                     }
-                    sleep(2000);
+                    sleep(5000);
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
@@ -97,6 +110,13 @@ public class SplashScreenActivity extends Activity {
             }
         };
         timerThread.start();
+    }
+
+    private void findViews(){
+
+        logo = (ImageView) findViewById(R.id.splash_logo);
+        appName = (TextView) findViewById(R.id.textView2);
+
     }
 
 }

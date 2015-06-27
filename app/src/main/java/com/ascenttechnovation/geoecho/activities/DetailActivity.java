@@ -206,8 +206,8 @@ public class DetailActivity extends FragmentActivity {
             @Override
             public void onStart(boolean a) {
                 progresDialog = new ProgressDialog(DetailActivity.this);
-                progresDialog.setTitle("Uploading please wait");
-                progresDialog.setMessage("Loading");
+                progresDialog.setTitle("GeoEcho");
+                progresDialog.setMessage("Uploading Image, Please wait...");
                 progresDialog.show();
             }
             @Override
@@ -234,7 +234,7 @@ public class DetailActivity extends FragmentActivity {
                     public void onStart(boolean status) {
                         progressDialog = new ProgressDialog(DetailActivity.this);
                         progressDialog.setTitle("GeoEcho");
-                        progressDialog.setMessage("Sending,Please Wait...");
+                        progressDialog.setMessage("Uploading Data,Please Wait...");
                         progressDialog.show();
                     }
                     @Override
