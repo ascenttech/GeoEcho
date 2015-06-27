@@ -2,8 +2,10 @@ package com.ascenttechnovation.geoecho.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.ascenttechnovation.geoecho.activities.CameraActivity;
+import com.ascenttechnovation.geoecho.activities.DetailActivity;
 import com.ascenttechnovation.geoecho.util.AndroidMultiPartEntity;
 import com.ascenttechnovation.geoecho.util.Constants;
 
@@ -28,9 +30,9 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
 
     long totalSize=0;
     String status;
-    public int photoId;
     File sourceFile;
     Context context;
+    String photoId;
 
 
     /**
@@ -80,7 +82,7 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
                         }
                     });
 
-            //sourceFile = new File(CameraActivity.imagepath);
+            sourceFile = new File(DetailActivity.fileUri.toString());
 
             // Adding file data to http body
             entity.addPart("image", new FileBody(sourceFile));
@@ -99,10 +101,17 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
 
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
+
+                    Log.d(Constants.LOG_TAG,"JSON OBJECT "+ jsonObject);
+
+                    JSONArray jsonArray = jsonObject.getJSONArray("response");
+                    JSONObject nestedJsonObject = jsonArray.getJSONObject(0);
+
+                    photoId = nestedJsonObject.getString("photo_id");
 //
 //                    status = jsonObject.getString("statusMessage");
 //
-//                    JSONArray jsonArray = jsonObject.getJSONArray("photo");
+//
 //
 //                    JSONObject jObject = jsonArray.getJSONObject(0);
 //                    photoId = jObject.getInt("photoID");
@@ -124,6 +133,7 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
             responseString = e.toString();
         }
 
+        Log.d(Constants.LOG_TAG," Response String "+responseString);
         return responseString;
 
     }
@@ -131,6 +141,8 @@ public class UploadImageToServerAsyncTask extends AsyncTask<Void, Integer, Strin
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+
+       Log.d(Constants.LOG_TAG, "Photo id" + photoId);
         listener.onResult(result);
     }
 }

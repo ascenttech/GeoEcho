@@ -28,11 +28,7 @@
         <activity android:name=".activities.LandingActivity"/>
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.DetailActivity"/>
-        <activity android:name=".activities.CameraActivity"/>
 
         <receiver android:name=".util.AlarmReciever"/>
-
-
     </application>
-
 </manifest>

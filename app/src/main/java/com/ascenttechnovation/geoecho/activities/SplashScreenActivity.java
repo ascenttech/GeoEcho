@@ -39,23 +39,24 @@ public class SplashScreenActivity extends Activity {
         Thread timerThread = new Thread(){
             public void run(){
                 try{
-                    Log.d("geoecho","SplashScreenActivity");
-
                     boolean gps_enabled = false;
                     boolean network_enabled = false;
 
                     LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+                    Log.d(Constants.LOG_TAG," Location Manager "+ lm);
                     gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    Log.d(Constants.LOG_TAG," GPS enabled "+ gps_enabled);
                     network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-                    if (gps_enabled)
+                    Log.d(Constants.LOG_TAG," Network Enable "+ network_enabled);
+                    if (gps_enabled){
                         gps_loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (network_enabled)
+                        Log.d(Constants.LOG_TAG," Location "+ gps_loc);
+                    }
+                    if (network_enabled){
                         net_loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
+                        Log.d(Constants.LOG_TAG," Location from Network "+ net_loc);
+                    }
                     if (gps_loc != null && net_loc != null) {
-
                         if (gps_loc.getAccuracy() >= net_loc.getAccuracy())
                             finalLoc = gps_loc;
                         else
@@ -63,12 +64,11 @@ public class SplashScreenActivity extends Activity {
                     }
                     else {
                         if (gps_loc != null) {
-                            finalLoc = net_loc;
-                        } else if (net_loc != null) {
                             finalLoc = gps_loc;
+                        } else if (net_loc != null) {
+                            finalLoc = net_loc;
                         }
                     }
-                    Log.d("geoecho", finalLoc.toString());
                     sleep(2000);
                 }catch(InterruptedException e){
                     e.printStackTrace();
