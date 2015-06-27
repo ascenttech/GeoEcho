@@ -71,26 +71,27 @@ public class DetailActivity extends FragmentActivity {
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100,MEDIA_TYPE_IMAGE = 1;
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
     public static Uri fileUri,output;
+    Button button1;
+    ImageButton call;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d(Constants.LOG_TAG, Constants.DetailActivity);
 
+        findViews();
 
-        Button button1 = (Button) findViewById(R.id.date);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDatePicker();
             }
         });
-        ed1 = (EditText) findViewById(R.id.name);
-        radioGroup = (RadioGroup) findViewById(R.id.rg);
-        spinner = (Spinner) findViewById(R.id.spinner);
+
+
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,astate);
         spinner.setAdapter(adapter_state);
-        dbutton = (Button) findViewById(R.id.date);
-        button = (Button) findViewById(R.id.button2);
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -110,7 +111,8 @@ public class DetailActivity extends FragmentActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-        final ImageButton call = (ImageButton) findViewById(R.id.camera);
+
+        call = (ImageButton) findViewById(R.id.camera);
         filePath = Environment.getExternalStorageDirectory() + "/img1.jpeg";
         File file = new File(filePath);
         output = Uri.fromFile(file);
@@ -122,6 +124,23 @@ public class DetailActivity extends FragmentActivity {
             }
         });
     }
+
+    private void findViews(){
+
+        button1 = (Button) findViewById(R.id.date);
+        ed1 = (EditText) findViewById(R.id.name);
+        radioGroup = (RadioGroup) findViewById(R.id.rg);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        dbutton = (Button) findViewById(R.id.date);
+        button = (Button) findViewById(R.id.button2);
+
+    }
+
+    private void setViews(){
+
+
+    }
+
     public String readexternaljason() {
         EditText mobileno = (EditText) findViewById(R.id.mobile_number_edit_login_activity);
         StringBuilder builder = new StringBuilder();
@@ -195,6 +214,7 @@ public class DetailActivity extends FragmentActivity {
                 + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
                 + "&latitude=" + URLEncoder.encode(""+latitude, "utf-8")
                 + "&longitude=" + URLEncoder.encode(""+longitude, "utf-8");
+
         new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
             @Override
             public void onStart(boolean status) {
@@ -216,6 +236,8 @@ public class DetailActivity extends FragmentActivity {
             }
         }).execute(finalUrl);
     }
+
+
     //image upload
     public void uploadImage(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -223,6 +245,26 @@ public class DetailActivity extends FragmentActivity {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                previewCapturedImage();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+
+
     private void previewCapturedImage(){
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -252,22 +294,7 @@ public class DetailActivity extends FragmentActivity {
             e.printStackTrace();
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                previewCapturedImage();
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(),
-                        "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
-    }
+
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
@@ -295,4 +322,11 @@ public class DetailActivity extends FragmentActivity {
 
         return mediaFile;
     }
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 }
