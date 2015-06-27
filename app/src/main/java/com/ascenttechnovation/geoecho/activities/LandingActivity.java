@@ -14,12 +14,21 @@ import com.ascenttechnovation.geoecho.util.Constants;
 public class LandingActivity extends ActionBarActivity {
 
     ImageView image;
+    Intent i ;
+    double latitude,longitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         Log.d(Constants.LOG_TAG,Constants.LandingActivity);
+
+        i = getIntent();
+        latitude = i.getDoubleExtra("latitude",0.0d);
+        longitude = i.getDoubleExtra("longitude",0.0d);
+        Log.d("SAGAR","landing "+ latitude);
+        Log.d("SAGAR","landing "+ longitude);
 
         findViews();
 
@@ -40,6 +49,8 @@ public class LandingActivity extends ActionBarActivity {
     public void selectImage(){
 
         Intent intent = new Intent(LandingActivity.this, DetailActivity.class);
+        intent.putExtra("latitude",latitude);
+        intent.putExtra("longitude",longitude);
         startActivity(intent);
 
     }

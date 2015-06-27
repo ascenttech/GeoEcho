@@ -27,4 +27,6 @@ public class Constants {
     // Log tags for all the asyncTask
     public static final String CheckLoginValidityAsyncTask=" CHECK LOGIN VALIDITY ASYNC TASK ";
 
+    public static String photoId;
+
 }

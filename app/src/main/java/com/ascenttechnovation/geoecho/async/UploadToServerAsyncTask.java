@@ -96,9 +96,9 @@ public class UploadToServerAsyncTask extends AsyncTask<Void,Void,Boolean>
                 {
                     JSONObject jsonObject = new JSONObject(responseString);
                     status = jsonObject.getString("statusMessage");
-                    JSONArray jsonArray = jsonObject.getJSONArray("photoId");
+                    JSONArray jsonArray = jsonObject.getJSONArray("photo");
                     JSONObject jObject = jsonArray.getJSONObject(0);
-                    String res = jObject.getString("updatePhoto");
+                    Constants.photoId = jObject.getString("photo_id");
                 }
                 catch(Exception e)
                 {

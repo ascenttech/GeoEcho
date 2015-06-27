@@ -80,16 +80,13 @@ public class SplashScreenActivity extends Activity {
                     e.printStackTrace();
                 }finally{
                     pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                    editor = pref.edit();
-                    Log.d("SAGAR"," get Latitude "+finalLoc.getLatitude() );
-                    Log.d("SAGAR"," get Longitude "+finalLoc.getLongitude() );
-
-                    editor.putLong("latitude",(long) finalLoc.getLatitude());
-                    editor.putLong("longitude",(long) finalLoc.getLongitude());
-                    editor.commit();
+//                    editor = pref.edit();
+//                    editor.commit();
                     login = pref.getInt("login",1);
                     if(login == 0) {
                         Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);
+                        i.putExtra("latitude",finalLoc.getLatitude());
+                        i.putExtra("longitude",finalLoc.getLongitude());
                         startActivity(i);
                     }
                     else {

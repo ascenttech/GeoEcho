@@ -58,7 +58,6 @@ public class DetailActivity extends FragmentActivity {
 
     private String[] state_array_details_activity = {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
     String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
-    long latitude,longitude;
     ProgressDialog progressDialog, progresDialog;
     EditText name_edit_details_activity;
     RadioGroup gender_radioGroup_details_activity;
@@ -72,6 +71,7 @@ public class DetailActivity extends FragmentActivity {
     public static Uri fileUri,output;
     Bitmap bitmap;
     String finalUrl;
+    double latitude,longitude;
 
 
     @Override
@@ -79,6 +79,15 @@ public class DetailActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d(Constants.LOG_TAG, Constants.DetailActivity);
+
+        Intent i = getIntent();
+        latitude = i.getDoubleExtra("latitude",0.0d);
+        longitude = i.getDoubleExtra("longitude",0.0d);
+
+        Log.d("SAGAR","detail  "+ latitude);
+        Log.d("SAGAR","detail "+ longitude);
+
+
         Button button1 = (Button) findViewById(R.id.date_button_details_actvity);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -187,13 +196,10 @@ public class DetailActivity extends FragmentActivity {
         check_gender_radiobutton_details_activity = (RadioButton) findViewById(selectedId);
         name = name_edit_details_activity.getText().toString();
         gender = check_gender_radiobutton_details_activity.getText().toString();
-        Log.d("SAGAR"," received longitude "+ insert_sharedpreference_details_activity.getLong("latitude", 0));
-        latitude = insert_sharedpreference_details_activity.getLong("latitude", 0);
-        longitude = insert_sharedpreference_details_activity.getLong("longitude", 0);
         contactno = insert_sharedpreference_details_activity.getString("contactNo","0");
 
         finalUrl = url + URLEncoder.encode(contactno, "utf-8")
-                + "&photo_id=" + URLEncoder.encode("1", "utf-8")
+                + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
                 + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
                 + "&name=" + URLEncoder.encode(name, "utf-8")
                 + "&gender=" + URLEncoder.encode(gender, "utf-8")
