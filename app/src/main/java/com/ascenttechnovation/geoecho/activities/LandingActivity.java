@@ -13,7 +13,7 @@ import com.ascenttechnovation.geoecho.util.Constants;
 
 public class LandingActivity extends ActionBarActivity {
 
-    ImageView image
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,6 +10,7 @@ public class Constants {
     //Log Tags
     // File upload url (replace the ip with your server address)
 //    public static final String IMAGE_UPLOAD_URL = "http://192.168.0.104/AndroidFileUpload/fileUpload.php";
+//    public static final String IMAGE_UPLOAD_URL = "http://andealr.com/crontest/geoecho/imageUplod.php";
     public static final String IMAGE_UPLOAD_URL = "http://andealr.com/crontest/geoecho/imageUplod.php";
 
     // Directory name to store captured images and videos
