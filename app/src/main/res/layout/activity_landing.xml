@@ -5,19 +5,52 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".LandingActivity">
 
-    <TextView android:text="Click on Plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
+    <com.ascenttechnovation.geoecho.custom.CustomTextView
+        android:id="@+id/afternoon_text_landing_activity"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:scaleType="center"
-        android:src="@drawable/plus"/>
+        android:textSize="22dp"
+        android:padding="20dp"
+        android:text="Afternoon Report"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rectangle"
+        />
+    <com.ascenttechnovation.geoecho.custom.CustomTextView
+        android:id="@+id/morning_text_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+        android:padding="20dp"
+        android:text="Morning Report"
+        android:gravity="center"
+        android:layout_above="@id/afternoon_text_landing_activity"
+        android:background="@drawable/rectangle"
+        android:layout_marginBottom="10dp"
+        />
+
+    <com.ascenttechnovation.geoecho.custom.CustomTextView
+        android:id="@+id/evening_text_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/afternoon_text_landing_activity"
+        android:textSize="22dp"
+        android:padding="20dp"
+        android:text="Evening Report"
+        android:gravity="center"
+        android:background="@drawable/rectangle"
+        android:layout_marginTop="10dp"
+        />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/image"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:scaleType="center"-->
+        <!--android:src="@drawable/plus"/>-->
 
 
 </RelativeLayout>

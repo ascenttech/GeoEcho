@@ -1,69 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ScrollView
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageButton
-                android:id="@+id/camera_image_details_activity"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin"
+        >
+        <ImageButton
+            android:id="@+id/camera_image_details_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo" />
+
+        <com.ascenttechnovation.geoecho.custom.CustomEditText
+            android:id="@+id/name_edit_details_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Full Name"
+            android:background="@drawable/rectangle"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/textSize"
+            />
+
+        <RadioGroup
+            android:id="@+id/gender_radiogroup_details_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <RadioButton android:id="@+id/male_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/logo" />
-
-            <EditText
-                android:id="@+id/name_edit_details_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Full Name"/>
-
-            <TextView android:text="Select Gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/gender_radiogroup_details_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton android:id="@+id/male_radio_details_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Male"/>
-                <RadioButton android:id="@+id/female_radio_details_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Female"/>
-            </RadioGroup>
-
-            <Spinner
-                android:id="@+id/state_spinner_details_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15px"
-                android:layout_gravity="center_horizontal"/>
-
-            <Button
-                android:id="@+id/date_button_details_actvity"
+                android:text="Male"
+                android:textSize="@dimen/textSize"
+                />
+            <RadioButton android:id="@+id/female_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Date"/>
+                android:text="Female"
+                android:textSize="@dimen/textSize"
+                />
+        </RadioGroup>
 
-            <EditText
-                android:id="@+id/comment_edit_login_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Comment..."/>
+        <Spinner
+            android:id="@+id/state_spinner_details_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/textSize"
+            />
 
-            <Button
-                android:id="@+id/submit_button_details_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   Submit   "
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        <com.ascenttechnovation.geoecho.custom.CustomButton
+            android:id="@+id/date_button_details_actvity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Date"
+            android:layout_marginBottom="@dimen/margin"
+            android:textSize="@dimen/textSize"
+            />
+
+        <com.ascenttechnovation.geoecho.custom.CustomEditText
+            android:id="@+id/comment_edit_login_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Comment..."
+            android:background="@drawable/rectangle"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/textSize"
+            />
+
+        <com.ascenttechnovation.geoecho.custom.CustomButton
+            android:id="@+id/submit_button_details_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_corners"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/textSize"
+            android:textSize="@dimen/textSize"
+            />
+    </LinearLayout>
+</ScrollView>

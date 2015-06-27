@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ascenttechnovation.geoecho.R;
 import com.ascenttechnovation.geoecho.util.Constants;
@@ -16,6 +17,7 @@ public class LandingActivity extends ActionBarActivity {
     ImageView image;
     Intent i ;
     double latitude,longitude;
+    TextView morningReport,afternoonReport,eveningReport;
 
 
     @Override
@@ -25,7 +27,7 @@ public class LandingActivity extends ActionBarActivity {
         Log.d(Constants.LOG_TAG,Constants.LandingActivity);
 
         i = getIntent();
-        latitude = i.getDoubleExtra("latitude",0.0d);
+        latitude = i.getDoubleExtra("latitude", 0.0d);
         longitude = i.getDoubleExtra("longitude",0.0d);
         Log.d("SAGAR","landing "+ latitude);
         Log.d("SAGAR","landing "+ longitude);
@@ -38,15 +40,24 @@ public class LandingActivity extends ActionBarActivity {
 
     private void findViews(){
 
-        image =(ImageView)findViewById(R.id.image);
+//        image =(ImageView)findViewById(R.id.image);
+
+        morningReport = (TextView) findViewById(R.id.morning_text_landing_activity);
+        afternoonReport = (TextView) findViewById(R.id.afternoon_text_landing_activity);
+        eveningReport = (TextView) findViewById(R.id.evening_text_landing_activity);
+
     }
 
     private void setViews(){
 
-        image.setOnClickListener(listener);
+//        image.setOnClickListener(listener);
+        morningReport.setOnClickListener(listener);
+        afternoonReport.setOnClickListener(listener);
+        eveningReport.setOnClickListener(listener);
+
     }
 
-    public void selectImage(){
+    public void enterDetails(){
 
         Intent intent = new Intent(LandingActivity.this, DetailActivity.class);
         intent.putExtra("latitude",latitude);
@@ -66,7 +77,11 @@ public class LandingActivity extends ActionBarActivity {
 
             switch (view.getId()){
 
-                case R.id.image: selectImage();
+                case R.id.morning_text_landing_activity: enterDetails();
+                    break;
+                case R.id.afternoon_text_landing_activity: enterDetails();
+                    break;
+                case R.id.evening_text_landing_activity: enterDetails();
                     break;
                 default:
                     break;

@@ -99,7 +99,7 @@ public class DetailActivity extends FragmentActivity {
 
         gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
         state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, state_array_details_activity);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,R.layout.row_spinner_item, state_array_details_activity);
         state_spinner_details_activity.setAdapter(adapter_state);
         dbutton = (Button) findViewById(R.id.date_button_details_actvity);
         button = (Button) findViewById(R.id.submit_button_details_activity);
@@ -198,15 +198,7 @@ public class DetailActivity extends FragmentActivity {
         gender = check_gender_radiobutton_details_activity.getText().toString();
         contactno = insert_sharedpreference_details_activity.getString("contactNo","0");
 
-        finalUrl = url + URLEncoder.encode(contactno, "utf-8")
-                + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
-                + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
-                + "&name=" + URLEncoder.encode(name, "utf-8")
-                + "&gender=" + URLEncoder.encode(gender, "utf-8")
-                + "&state=" + URLEncoder.encode(state, "utf-8")
-                + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
-                + "&latitude=" + URLEncoder.encode(""+latitude, "utf-8")
-                + "&longitude=" + URLEncoder.encode(""+longitude, "utf-8");
+
 
 
 
@@ -221,6 +213,21 @@ public class DetailActivity extends FragmentActivity {
             @Override
             public void onResult(boolean b) {
                 progresDialog.dismiss();
+
+                try {
+                    finalUrl = url + URLEncoder.encode(contactno, "utf-8")
+                            + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
+                            + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
+                            + "&name=" + URLEncoder.encode(name, "utf-8")
+                            + "&gender=" + URLEncoder.encode(gender, "utf-8")
+                            + "&state=" + URLEncoder.encode(state, "utf-8")
+                            + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
+                            + "&latitude=" + URLEncoder.encode("" + latitude, "utf-8")
+                            + "&longitude=" + URLEncoder.encode("" + longitude, "utf-8");
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
 
                 new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
                     @Override

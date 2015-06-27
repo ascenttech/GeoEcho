@@ -6,7 +6,7 @@
 
 
 
-        <EditText
+        <com.ascenttechnovation.geoecho.custom.CustomEditText
             android:id="@+id/comment_edit_details_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
             android:layout_centerInParent="true"
             />
 
-        <Button
+        <com.ascenttechnovation.geoecho.custom.CustomButton
             android:id="@+id/login_button_login_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
