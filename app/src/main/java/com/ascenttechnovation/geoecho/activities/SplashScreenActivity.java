@@ -28,6 +28,10 @@ public class SplashScreenActivity extends Activity {
     SharedPreferences.Editor editor;
     int login;
     Location finalLoc = null,net_loc = null,gps_loc = null;
+    boolean gps_enabled = false;
+    boolean network_enabled = false;
+    LocationManager lm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,19 +39,21 @@ public class SplashScreenActivity extends Activity {
         Log.d(Constants.LOG_TAG, Constants.SplashScreenActivity);
 
         setContentView(R.layout.activity_splash_screen);
-        
+
         Thread timerThread = new Thread(){
             public void run(){
                 try{
-                    boolean gps_enabled = false;
-                    boolean network_enabled = false;
 
-                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                    lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                     Log.d(Constants.LOG_TAG," Location Manager "+ lm);
+
                     gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
                     Log.d(Constants.LOG_TAG," GPS enabled "+ gps_enabled);
+
                     network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
                     Log.d(Constants.LOG_TAG," Network Enable "+ network_enabled);
+
                     if (gps_enabled){
                         gps_loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         Log.d(Constants.LOG_TAG," Location "+ gps_loc);
@@ -74,7 +80,7 @@ public class SplashScreenActivity extends Activity {
                     e.printStackTrace();
                 }finally{
                     pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                    editor =pref.edit();;
+                    editor = pref.edit();;
                     editor.putLong("latitude",(long) finalLoc.getLatitude());
                     editor.putLong("longitude",(long) finalLoc.getLongitude());
                     editor.commit();

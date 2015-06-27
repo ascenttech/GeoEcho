@@ -1,4 +1,4 @@
-package com.ascenttechnovation.geoecho.activities;
+package com.ascenttechnovation.geoecho.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;

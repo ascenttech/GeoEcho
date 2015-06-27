@@ -1,8 +1,6 @@
 package com.ascenttechnovation.geoecho.activities;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,9 +28,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ascenttechnovation.geoecho.R;
-import com.ascenttechnovation.geoecho.async.CheckLoginValidityAsyncTask;
 import com.ascenttechnovation.geoecho.async.SubmitDetailsAsyncTask;
 import com.ascenttechnovation.geoecho.async.UploadImageToServerAsyncTask;
+import com.ascenttechnovation.geoecho.fragment.DatePickerFragment;
 import com.ascenttechnovation.geoecho.util.Constants;
 
 import org.apache.http.HttpEntity;
@@ -42,8 +40,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,6 +76,8 @@ public class DetailActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Log.d(Constants.LOG_TAG, Constants.DetailActivity);
+
+
         Button button1 = (Button) findViewById(R.id.date);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
