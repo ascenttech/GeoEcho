@@ -1,6 +1,5 @@
 package com.ascenttechnovation.geoecho.activities;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -33,19 +33,8 @@ import com.ascenttechnovation.geoecho.async.UploadToServerAsyncTask;
 import com.ascenttechnovation.geoecho.fragment.DatePickerFragment;
 import com.ascenttechnovation.geoecho.util.Constants;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,14 +47,14 @@ import java.util.Locale;
 public class DetailActivity extends FragmentActivity {
 
     private String[] state_array_details_activity = {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
-    String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
+    String contactno,filePath,state,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
     ProgressDialog progressDialog, progresDialog;
-    EditText name_edit_details_activity;
-    RadioGroup gender_radioGroup_details_activity;
+    EditText name;
+    RadioGroup gender;
     RadioButton check_gender_radiobutton_details_activity;
-    Spinner state_spinner_details_activity;
+    Spinner states;
     Button dbutton,button;
-    SharedPreferences insert_sharedpreference_details_activity;
+    SharedPreferences sharedPreference;
     ImageView image;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100,MEDIA_TYPE_IMAGE = 1;
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
@@ -74,6 +63,10 @@ public class DetailActivity extends FragmentActivity {
     String finalUrl;
     double latitude,longitude;
     Button dateButton;
+    int selectedId;
+    DatePickerFragment date;
+    Calendar calender;
+    Bundle args;
 
 
     @Override
@@ -95,7 +88,7 @@ public class DetailActivity extends FragmentActivity {
         });
 
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,R.layout.row_spinner_item, state_array_details_activity);
-        state_spinner_details_activity.setAdapter(adapter_state);
+        states.setAdapter(adapter_state);
 
         dbutton = (Button) findViewById(R.id.date_button_details_actvity);
         button = (Button) findViewById(R.id.submit_button_details_activity);
@@ -109,7 +102,7 @@ public class DetailActivity extends FragmentActivity {
                 }
             }
         });
-        state_spinner_details_activity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        states.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View seletedItem, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
@@ -136,19 +129,19 @@ public class DetailActivity extends FragmentActivity {
     private void findViews(){
 
         dateButton = (Button) findViewById(R.id.date_button_details_actvity);
-        name_edit_details_activity = (EditText) findViewById(R.id.name_edit_details_activity);
+        name = (EditText) findViewById(R.id.name_edit_details_activity);
         image = (ImageView) findViewById(R.id.camera_image_details_activity);
-        gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
-        state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
+        gender = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
+        states = (Spinner) findViewById(R.id.state_spinner_details_activity);
 
 
     }
 
 
     private void showDatePicker() {
-        DatePickerFragment date = new DatePickerFragment();
-        Calendar calender = Calendar.getInstance();
-        Bundle args = new Bundle();
+        date = new DatePickerFragment();
+        calender = Calendar.getInstance();
+        args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
         args.putInt("month", calender.get(Calendar.MONTH));
         args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
@@ -172,84 +165,80 @@ public class DetailActivity extends FragmentActivity {
     }
 
     private void login() throws IOException{
-        insert_sharedpreference_details_activity = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        int selectedId = gender_radioGroup_details_activity.getCheckedRadioButtonId();
+        sharedPreference = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        selectedId = gender.getCheckedRadioButtonId();
         check_gender_radiobutton_details_activity = (RadioButton) findViewById(selectedId);
-        name = name_edit_details_activity.getText().toString();
-        gender = check_gender_radiobutton_details_activity.getText().toString();
-        contactno = insert_sharedpreference_details_activity.getString("contactNo","0");
+        contactno = sharedPreference.getString("contactNo","0");
 
 
-
-
-
-        new UploadToServerAsyncTask(fileUri.getPath(),getApplicationContext(),new UploadToServerAsyncTask.UploadToServerCallback() {
-            @Override
-            public void onStart(boolean a) {
-                progresDialog = new ProgressDialog(DetailActivity.this);
-                progresDialog.setTitle("GeoEcho");
-                progresDialog.setMessage("Uploading Image, Please wait...");
-                progresDialog.show();
-            }
-            @Override
-            public void onResult(boolean b) {
-                progresDialog.dismiss();
-
-                try {
-                    finalUrl = url + URLEncoder.encode(contactno, "utf-8")
-                            + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
-                            + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
-                            + "&name=" + URLEncoder.encode(name, "utf-8")
-                            + "&gender=" + URLEncoder.encode(gender, "utf-8")
-                            + "&state=" + URLEncoder.encode(state, "utf-8")
-                            + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
-                            + "&latitude=" + URLEncoder.encode("" + latitude, "utf-8")
-                            + "&longitude=" + URLEncoder.encode("" + longitude, "utf-8");
+            new UploadToServerAsyncTask(fileUri.getPath(),getApplicationContext(),new UploadToServerAsyncTask.UploadToServerCallback() {
+                @Override
+                public void onStart(boolean a) {
+                    progresDialog = new ProgressDialog(DetailActivity.this);
+                    progresDialog.setTitle("GeoEcho");
+                    progresDialog.setMessage("Uploading Image, Please wait...");
+                    progresDialog.show();
                 }
-                catch(Exception e){
-                    e.printStackTrace();
+                @Override
+                public void onResult(boolean b) {
+                    progresDialog.dismiss();
+
+                    try {
+                        finalUrl = url + URLEncoder.encode(contactno, "utf-8")
+                                + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
+                                + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
+                                + "&name=" + URLEncoder.encode(name.getText().toString(), "utf-8")
+                                + "&gender=" + URLEncoder.encode(check_gender_radiobutton_details_activity.getText().toString(), "utf-8")
+                                + "&state=" + URLEncoder.encode(state, "utf-8")
+                                + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
+                                + "&latitude=" + URLEncoder.encode("" + latitude, "utf-8")
+                                + "&longitude=" + URLEncoder.encode("" + longitude, "utf-8");
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
+                        @Override
+                        public void onStart(boolean status) {
+                            progressDialog = new ProgressDialog(DetailActivity.this);
+                            progressDialog.setTitle("GeoEcho");
+                            progressDialog.setMessage("Uploading Data,Please Wait...");
+                            progressDialog.show();
+                        }
+                        @Override
+                        public void onResult(boolean result) {
+                            progressDialog.dismiss();
+                            if(result){
+                                Constants.photoId =null;
+
+                                Toast.makeText(getApplicationContext(),"Data submitted sucessfully",3000).show();
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        Intent i = new Intent(DetailActivity.this,LandingActivity.class);
+                                        startActivity(i);
+
+                                    }
+                                },4000);
+                            }
+                            else{
+                                Constants.photoId =null;
+                                Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }).execute(finalUrl);
+
+
                 }
-
-                new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
-                    @Override
-                    public void onStart(boolean status) {
-                        progressDialog = new ProgressDialog(DetailActivity.this);
-                        progressDialog.setTitle("GeoEcho");
-                        progressDialog.setMessage("Uploading Data,Please Wait...");
-                        progressDialog.show();
-                    }
-                    @Override
-                    public void onResult(boolean result) {
-                        progressDialog.dismiss();
-                        if(result){
-                            Constants.photoId =0;
-
-                            AlertDialog.Builder builder = new AlertDialog().create();
-                            builder.setTitle("Success");
-                            builder.setMessage("Your Data has been submitted");
-                            builder.show();
-
-                            Intent i = new Intent(DetailActivity.this,LandingActivity.class);
-                            startActivity(i);
-
-
-                        }
-                        else{
-                            Constants.photoId =0;
-                            Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }).execute(finalUrl);
-
-
-            }
-        }).execute();
-
-
-
+            }).execute();
 
 
     }
+
+
     //image upload
     public void uploadImage(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -262,7 +251,6 @@ public class DetailActivity extends FragmentActivity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 8;
             bitmap = BitmapFactory.decodeFile(fileUri.getPath(),options);
-            Log.d(Constants.LOG_TAG,bitmap.toString());
             image.setImageBitmap(bitmap);
 
         } catch (NullPointerException e) {
