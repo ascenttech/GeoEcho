@@ -7,6 +7,8 @@ public class Constants {
 
     public static final String LOG_TAG =" GeoEcho ";
 
+    public static boolean clicked = false;
+
     //Log Tags
     // File upload url (replace the ip with your server address)
 //    public static final String IMAGE_UPLOAD_URL = "http://192.168.0.104/AndroidFileUpload/fileUpload.php";

@@ -152,6 +152,7 @@ public class DetailActivity extends FragmentActivity {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             date = String.valueOf(year)+"/"+String.valueOf(monthOfYear)+"/"+String.valueOf(dayOfMonth);
+            Constants.clicked = true;
             dbutton.setText(date);
         }
     };
@@ -165,80 +166,122 @@ public class DetailActivity extends FragmentActivity {
         sharedpref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         int selectedId = genderrg.getCheckedRadioButtonId();
         genderrb = (RadioButton) findViewById(selectedId);
+        Log.d("GeoEcho"," Gender "+ genderrb);
+
         name = nameedit.getText().toString();
         gender = genderrb.getText().toString();
+        Log.d("GeoEcho"," Gender Text "+ gender);
+
         contactno = sharedpref.getString("contactNo","0");
 
-        new UploadToServerAsyncTask(fileUri.getPath(),getApplicationContext(),new UploadToServerAsyncTask.UploadToServerCallback() {
-            @Override
-            public void onStart(boolean a) {
-                progresDialog = new ProgressDialog(DetailActivity.this);
-                progresDialog.setTitle("GeoEcho");
-                progresDialog.setMessage("Uploading Image, Please wait...");
-                progresDialog.show();
-            }
-            @Override
-            public void onResult(boolean b) {
-                progresDialog.dismiss();
+        if(fileUri != null){
 
-                try {
-                    finalUrl = url + URLEncoder.encode(contactno, "utf-8")
-                            + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
-                            + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
-                            + "&name=" + URLEncoder.encode(name, "utf-8")
-                            + "&gender=" + URLEncoder.encode(gender, "utf-8")
-                            + "&state=" + URLEncoder.encode(state, "utf-8")
-                            + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
-                            + "&latitude=" + URLEncoder.encode("" + latitude, "utf-8")
-                            + "&longitude=" + URLEncoder.encode("" + longitude, "utf-8");
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
+            if(validateData()){
 
-                new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
+                new UploadToServerAsyncTask(fileUri.getPath(),getApplicationContext(),new UploadToServerAsyncTask.UploadToServerCallback() {
                     @Override
-                    public void onStart(boolean status) {
-                        progressDialog = new ProgressDialog(DetailActivity.this);
-                        progressDialog.setTitle("GeoEcho");
-                        progressDialog.setMessage("Uploading Data,Please Wait...");
-                        progressDialog.show();
+                    public void onStart(boolean a) {
+                        progresDialog = new ProgressDialog(DetailActivity.this);
+                        progresDialog.setTitle("GeoEcho");
+                        progresDialog.setMessage("Uploading Image, Please wait...");
+                        progresDialog.show();
                     }
                     @Override
-                    public void onResult(boolean result) {
-                        progressDialog.dismiss();
-                        if(result){
-                            Constants.photoId = "null";
+                    public void onResult(boolean b) {
+                        progresDialog.dismiss();
 
-                            Toast.makeText(getApplicationContext()," Data submitted successfully ",3000).show();
+                        fileUri = null;
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                        try {
+                            finalUrl = url + URLEncoder.encode(contactno, "utf-8")
+                                    + "&photo_id=" + URLEncoder.encode(Constants.photoId, "utf-8")
+                                    + "&image_link=" + URLEncoder.encode("photopath", "utf-8")
+                                    + "&name=" + URLEncoder.encode(name, "utf-8")
+                                    + "&gender=" + URLEncoder.encode(gender, "utf-8")
+                                    + "&state=" + URLEncoder.encode(state, "utf-8")
+                                    + "&date=" + URLEncoder.encode(dbutton.getText().toString(), "utf-8")
+                                    + "&latitude=" + URLEncoder.encode("" + latitude, "utf-8")
+                                    + "&longitude=" + URLEncoder.encode("" + longitude, "utf-8");
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
 
-                                    Intent i = new Intent(DetailActivity.this,LandingActivity.class);
-                                    startActivity(i);
+                        new SubmitDetailsAsyncTask(getApplicationContext(),new SubmitDetailsAsyncTask.SubmitDetailsListener() {
+                            @Override
+                            public void onStart(boolean status) {
+                                progressDialog = new ProgressDialog(DetailActivity.this);
+                                progressDialog.setTitle("GeoEcho");
+                                progressDialog.setMessage("Uploading Data,Please Wait...");
+                                progressDialog.show();
+                            }
+                            @Override
+                            public void onResult(boolean result) {
+                                progressDialog.dismiss();
+                                if(result){
+                                    Constants.photoId = "null";
+                                    Constants.clicked = false;
+
+                                    Toast.makeText(getApplicationContext()," Data submitted successfully ",3000).show();
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            Intent i = new Intent(DetailActivity.this,LandingActivity.class);
+                                            startActivity(i);
+                                        }
+                                    },3000);
+
+
                                 }
-                            },3000);
+                                else{
+                                    Constants.photoId = "null";
+                                    Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }).execute(finalUrl);
 
 
-                        }
-                        else{
-                            Constants.photoId = "null";
-                            Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
-                        }
                     }
-                }).execute(finalUrl);
-
+                }).execute();
 
             }
-        }).execute();
+        }
+        else{
 
-
-
-
+            Toast.makeText(getApplicationContext()," Upload an Image ",3000).show();
+        }
 
     }
+
+    public boolean validateData(){
+
+        if(!nameedit.getText().toString().isEmpty()){
+            if(genderrb.isChecked()){
+                if(statespinner.getSelectedItemId() != 0L){
+                    if(Constants.clicked == true){
+
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Data not set",3000).show();
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"State not selected ",3000).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Gender not selected",3000).show();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Please enter name",3000).show();
+        }
+        return false;
+    }
+
     //image upload
     public void uploadImage(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -251,7 +294,6 @@ public class DetailActivity extends FragmentActivity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 8;
             bitmap = BitmapFactory.decodeFile(fileUri.getPath(),options);
-            Log.d(Constants.LOG_TAG,bitmap.toString());
             image.setImageBitmap(bitmap);
 
         } catch (NullPointerException e) {

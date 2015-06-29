@@ -47,6 +47,7 @@
                 android:textSize="@dimen/textSize"
                 android:textStyle="normal"
                 android:layout_gravity="center_vertical"
+                android:checked="true"
                 />
             <com.ascenttechnovation.geoecho.custom.CustomRadioButton
                 android:id="@+id/female_radio_details_activity"
