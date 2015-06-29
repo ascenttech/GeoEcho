@@ -17,6 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/camera_icon"
             android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
             />
 
         <com.ascenttechnovation.geoecho.custom.CustomEditText

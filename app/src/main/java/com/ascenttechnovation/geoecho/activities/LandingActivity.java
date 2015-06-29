@@ -21,7 +21,6 @@ public class LandingActivity extends ActionBarActivity {
     TextView morningReport,afternoonReport,eveningReport;
     int counter =0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +30,7 @@ public class LandingActivity extends ActionBarActivity {
         i = getIntent();
         latitude = i.getDoubleExtra("latitude", 0.0d);
         longitude = i.getDoubleExtra("longitude",0.0d);
+
 
         findViews();
 

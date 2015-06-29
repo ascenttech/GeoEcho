@@ -33,8 +33,19 @@ import com.ascenttechnovation.geoecho.async.UploadToServerAsyncTask;
 import com.ascenttechnovation.geoecho.fragment.DatePickerFragment;
 import com.ascenttechnovation.geoecho.util.Constants;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,15 +57,15 @@ import java.util.Locale;
  */
 public class DetailActivity extends FragmentActivity {
 
-    private String[] sarray = {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
+    private String[] state_array_details_activity = {"Select State","Andra Pradesh","Assam","Bihar","Haryana","H P", "J and K","Karnataka", "Kerala","Maharastra"};
     String contactno,filePath,date,name,state,gender,url="http://andealr.com/crontest/geoecho/dataInsert.php?contact_no=";
     ProgressDialog progressDialog, progresDialog;
-    EditText nameedit;
-    RadioGroup genderrg;
-    RadioButton genderrb;
-    Spinner statespinner;
-    Button dbutton, sbutton;
-    SharedPreferences sharedpreference;
+    EditText name_edit_details_activity;
+    RadioGroup gender_radioGroup_details_activity;
+    RadioButton check_gender_radiobutton_details_activity;
+    Spinner state_spinner_details_activity;
+    Button dbutton,button;
+    SharedPreferences insert_sharedpreference_details_activity;
     ImageView image;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100,MEDIA_TYPE_IMAGE = 1;
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
@@ -62,6 +73,7 @@ public class DetailActivity extends FragmentActivity {
     Bitmap bitmap;
     String finalUrl;
     double latitude,longitude;
+    Button dateButton;
 
 
     @Override
@@ -76,26 +88,28 @@ public class DetailActivity extends FragmentActivity {
 
         findViews();
 
-        dbutton.setOnClickListener(new View.OnClickListener() {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDatePicker();
             }
         });
 
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,R.layout.row_spinner_item, sarray);
-        statespinner.setAdapter(adapter_state);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,R.layout.row_spinner_item, state_array_details_activity);
+        state_spinner_details_activity.setAdapter(adapter_state);
 
-        sbutton = (Button) findViewById(R.id.submit_button_details_activity);
-        sbutton.setOnClickListener(new View.OnClickListener() {
+        dbutton = (Button) findViewById(R.id.date_button_details_actvity);
+        button = (Button) findViewById(R.id.submit_button_details_activity);
+        button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     login();
-                } catch (Exception e) {
+                }
+                catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-        statespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        state_spinner_details_activity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View seletedItem, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
@@ -121,11 +135,11 @@ public class DetailActivity extends FragmentActivity {
 
     private void findViews(){
 
-        dbutton = (Button) findViewById(R.id.date_button_details_actvity);
-        nameedit = (EditText) findViewById(R.id.name_edit_details_activity);
+        dateButton = (Button) findViewById(R.id.date_button_details_actvity);
+        name_edit_details_activity = (EditText) findViewById(R.id.name_edit_details_activity);
         image = (ImageView) findViewById(R.id.camera_image_details_activity);
-        genderrg = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
-        statespinner = (Spinner) findViewById(R.id.state_spinner_details_activity);
+        gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
+        state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
 
 
     }
@@ -158,12 +172,12 @@ public class DetailActivity extends FragmentActivity {
     }
 
     private void login() throws IOException{
-        sharedpreference = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        int selectedId = genderrg.getCheckedRadioButtonId();
-        genderrb = (RadioButton) findViewById(selectedId);
-        name = nameedit.getText().toString();
-        gender = genderrb.getText().toString();
-        contactno = sharedpreference.getString("contactNo","0");
+        insert_sharedpreference_details_activity = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        int selectedId = gender_radioGroup_details_activity.getCheckedRadioButtonId();
+        check_gender_radiobutton_details_activity = (RadioButton) findViewById(selectedId);
+        name = name_edit_details_activity.getText().toString();
+        gender = check_gender_radiobutton_details_activity.getText().toString();
+        contactno = insert_sharedpreference_details_activity.getString("contactNo","0");
 
 
 
