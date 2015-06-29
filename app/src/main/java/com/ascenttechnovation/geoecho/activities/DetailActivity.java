@@ -1,5 +1,6 @@
 package com.ascenttechnovation.geoecho.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -72,6 +73,7 @@ public class DetailActivity extends FragmentActivity {
     Bitmap bitmap;
     String finalUrl;
     double latitude,longitude;
+    Button dateButton;
 
 
     @Override
@@ -84,23 +86,17 @@ public class DetailActivity extends FragmentActivity {
         latitude = i.getDoubleExtra("latitude",0.0d);
         longitude = i.getDoubleExtra("longitude",0.0d);
 
-        Log.d("SAGAR","detail  "+ latitude);
-        Log.d("SAGAR","detail "+ longitude);
+        findViews();
 
-
-        Button button1 = (Button) findViewById(R.id.date_button_details_actvity);
-        button1.setOnClickListener(new View.OnClickListener() {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDatePicker();
             }
         });
-        name_edit_details_activity = (EditText) findViewById(R.id.name_edit_details_activity);
-        image = (ImageView) findViewById(R.id.camera_image_details_activity);
 
-        gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
-        state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,R.layout.row_spinner_item, state_array_details_activity);
         state_spinner_details_activity.setAdapter(adapter_state);
+
         dbutton = (Button) findViewById(R.id.date_button_details_actvity);
         button = (Button) findViewById(R.id.submit_button_details_activity);
         button.setOnClickListener(new View.OnClickListener() {
@@ -136,34 +132,19 @@ public class DetailActivity extends FragmentActivity {
             }
         });
     }
-    public String readexternaljason() {
-        EditText mobileno = (EditText) findViewById(R.id.comment_edit_login_activity);
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://192.168.0.104/nilesh/dataInsert.php?contactNo="+mobileno.getText().toString());
-        try {
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) {
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                    Log.d("geoecho",builder.toString());
-                }
-            } else {
-                Toast.makeText(getApplicationContext(),"No Json file found.",Toast.LENGTH_SHORT).show();
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return builder.toString();
+
+    private void findViews(){
+
+        dateButton = (Button) findViewById(R.id.date_button_details_actvity);
+        name_edit_details_activity = (EditText) findViewById(R.id.name_edit_details_activity);
+        image = (ImageView) findViewById(R.id.camera_image_details_activity);
+        gender_radioGroup_details_activity = (RadioGroup) findViewById(R.id.gender_radiogroup_details_activity);
+        state_spinner_details_activity = (Spinner) findViewById(R.id.state_spinner_details_activity);
+
+
     }
+
+
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
         Calendar calender = Calendar.getInstance();
@@ -241,10 +222,20 @@ public class DetailActivity extends FragmentActivity {
                     public void onResult(boolean result) {
                         progressDialog.dismiss();
                         if(result){
+                            Constants.photoId =0;
+
+                            AlertDialog.Builder builder = new AlertDialog().create();
+                            builder.setTitle("Success");
+                            builder.setMessage("Your Data has been submitted");
+                            builder.show();
+
                             Intent i = new Intent(DetailActivity.this,LandingActivity.class);
                             startActivity(i);
+
+
                         }
                         else{
+                            Constants.photoId =0;
                             Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
                         }
                     }

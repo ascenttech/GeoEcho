@@ -88,13 +88,11 @@ public class SplashScreenActivity extends Activity {
                             finalLoc = net_loc;
                         }
                     }
-                    sleep(5000);
+                    sleep(3000);
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
                     pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-//                    editor = pref.edit();
-//                    editor.commit();
                     login = pref.getInt("login",1);
                     if(login == 0) {
                         Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);

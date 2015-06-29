@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="5dp"
-        android:background="@drawable/b"
+        android:background="@drawable/e"
         >
         <ImageButton
             android:id="@+id/camera_image_details_activity"
@@ -38,7 +38,8 @@
             android:layout_marginTop="@dimen/margin"
             android:background="@drawable/rectangle"
             >
-            <RadioButton android:id="@+id/male_radio_details_activity"
+            <com.ascenttechnovation.geoecho.custom.CustomRadioButton
+                android:id="@+id/male_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male"
@@ -46,7 +47,8 @@
                 android:textStyle="normal"
                 android:layout_gravity="center_vertical"
                 />
-            <RadioButton android:id="@+id/female_radio_details_activity"
+            <com.ascenttechnovation.geoecho.custom.CustomRadioButton
+                android:id="@+id/female_radio_details_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Female"

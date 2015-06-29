@@ -31,8 +31,6 @@ public class LandingActivity extends ActionBarActivity {
         i = getIntent();
         latitude = i.getDoubleExtra("latitude", 0.0d);
         longitude = i.getDoubleExtra("longitude",0.0d);
-        Log.d("SAGAR","landing "+ latitude);
-        Log.d("SAGAR","landing "+ longitude);
 
         findViews();
 
@@ -42,8 +40,6 @@ public class LandingActivity extends ActionBarActivity {
 
     private void findViews(){
 
-//        image =(ImageView)findViewById(R.id.image);
-
         morningReport = (TextView) findViewById(R.id.morning_text_landing_activity);
         afternoonReport = (TextView) findViewById(R.id.afternoon_text_landing_activity);
         eveningReport = (TextView) findViewById(R.id.evening_text_landing_activity);
@@ -52,7 +48,6 @@ public class LandingActivity extends ActionBarActivity {
 
     private void setViews(){
 
-//        image.setOnClickListener(listener);
         morningReport.setOnClickListener(listener);
         afternoonReport.setOnClickListener(listener);
         eveningReport.setOnClickListener(listener);
