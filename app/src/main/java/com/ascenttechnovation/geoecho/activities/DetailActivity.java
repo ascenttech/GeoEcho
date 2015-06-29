@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -168,10 +169,6 @@ public class DetailActivity extends FragmentActivity {
         gender = genderrb.getText().toString();
         contactno = sharedpref.getString("contactNo","0");
 
-
-
-
-
         new UploadToServerAsyncTask(fileUri.getPath(),getApplicationContext(),new UploadToServerAsyncTask.UploadToServerCallback() {
             @Override
             public void onStart(boolean a) {
@@ -211,20 +208,23 @@ public class DetailActivity extends FragmentActivity {
                     public void onResult(boolean result) {
                         progressDialog.dismiss();
                         if(result){
-                            Constants.photoId =0;
+                            Constants.photoId = "null";
 
-                            AlertDialog.Builder builder = new AlertDialog().create();
-                            builder.setTitle("Success");
-                            builder.setMessage("Your Data has been submitted");
-                            builder.show();
+                            Toast.makeText(getApplicationContext()," Data submitted successfully ",3000).show();
 
-                            Intent i = new Intent(DetailActivity.this,LandingActivity.class);
-                            startActivity(i);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    Intent i = new Intent(DetailActivity.this,LandingActivity.class);
+                                    startActivity(i);
+                                }
+                            },3000);
 
 
                         }
                         else{
-                            Constants.photoId =0;
+                            Constants.photoId = "null";
                             Toast.makeText(getApplicationContext(),"There has been a problem.\nTry Again Later", Toast.LENGTH_LONG).show();
                         }
                     }
